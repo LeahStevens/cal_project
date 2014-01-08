@@ -1,26 +1,60 @@
-print "\e[5;36m"
+#This formula gets the input first reveived EX: 2009, or may 2009
 
-initiate = gets
+initiate = gets.chomp
 
-if initiate.to_i.between?(1800, 5000)
-  puts initiate + "This is the year"
-# # elsif initiate.chomp.downcase() == "january" || "febuary" || "march" || "april" || "may" || "june" || "july" || "august" || "september" || "october" || "november" || "december"
-#   puts initiate + "This is the month"
+# It checks the length to see if it is a year or year and month.
+# This is for assigning which is month and which is year.
+if initiate.length() >= 5
+  first, last = initiate.split(/ /)
+  initiateMonth = first.chomp.to_s.downcase().capitalize()
+  initiateYear = last.chomp
+
+#This is for a year only, it checks to see if there are only 4 characters.
+#If so it puts them as the year and the month as blank
+elsif initiate.length() == 4
+  initiateYear = initiate.chomp
+  initiateMonth = ""
+
+# Exits application if less than 4 characters
 else
-  puts "something is wrong"
+ exit
+end
+
+
+
+months = ["January","Febuary","March","April","May","June","July","August","September","October","November","December"]
+
+
+if initiateYear.to_i.between?(1800, 5000)
+  if months.include? initiateMonth
+
+    month = months.index(initiateMonth) + 1
+    outputYearAndMonth = initiateMonth +" "+ initiateYear
+    puts outputYearAndMonth.center(20)
+    puts "Su Mo Tu We Th Fr Sa "
+
+  elsif initiateMonth == ""
+    puts initiateYear.center(64)
+
+    puts "Jan 1st starts on a "
+    month = 1
+  else
+    exit
+  end
+else
   exit
 end
 
 
 
-puts "Give me a year"
-year = gets.to_i
-puts "Give me a month"
-month = gets.to_i
-puts "Give me a day"
-day = gets.to_i
 
-print "\e[5;34m"
+
+
+year = initiateYear.to_i
+month = month
+day = 1
+
+
 if month == 1
   month = 13
   year = year -1
@@ -30,13 +64,7 @@ elsif month == 2
 else
 end
 
-
 algorithm = (day + (((month + 1) *26)/10) + year + (year/4) + (6 * (year/100)) + (year/400))%7
-print "\e[5;32m"
-
-
-
-
 
 if algorithm == 0
   weekday = "Saturday"
@@ -53,7 +81,7 @@ elsif algorithm == 5
 elsif algorithm == 6
   weekday = "Friday"
 else
-  puts "\e[5;31m" "Error"
+  exit
 end
 
 puts weekday
